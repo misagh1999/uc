@@ -4,16 +4,10 @@ using namespace std;
 #include "queue.h"
 #include "stack.h"
 
-
 class MoveDir{
 	public:
 		int i,j;
 };
-
-
-
-
-
 
 void path_Queue(int row,int col,int **maze,int **mark,int direction,int clock){
 	
@@ -78,20 +72,11 @@ void path_Queue(int row,int col,int **maze,int **mark,int direction,int clock){
 			g= a + md[d].i;h = b+md[d].j;
 			if(maze[g][h]==-1){
 				mark[g][h]=1;
-				/*
-				temp.x= a;temp.y=b;temp.dir=++d;
-				Items.push(temp);
-				for(int i=0;i<row;i++){
-					for(int j=0;j<col;j++)
-						cout<<mark[i][j];
-					cout<<endl;
-				}
-				Items.print();
-				
-				*/
+				cout<<"\n******* Queue *******"<<endl;
 				cout<<"length: "<<temp.dis+1<<endl;
-				cout<<"Max Stack Number: "<<MaxStackNumber<<endl;
 				cout<<"time: "<<time<<endl;
+				cout<<"Max Stack Number: "<<MaxStackNumber<<endl;
+				cout<<"*******     *******"<<endl<<endl;
 				return;
 			}
 			if((!maze[g][h]) && (!mark[g][h]) ){
@@ -109,7 +94,7 @@ void path_Queue(int row,int col,int **maze,int **mark,int direction,int clock){
 	
 }
 
-void path(int row,int col,int **maze,int **mark,int direction,int clock){
+void path_Stack(int row,int col,int **maze,int **mark,int direction,int clock){
 	
 	MoveDir * md = new MoveDir[direction];
 	
@@ -172,14 +157,12 @@ void path(int row,int col,int **maze,int **mark,int direction,int clock){
 				mark[g][h]=1;
 				temp.x= a;temp.y=b;temp.dir=++d;
 				Items.push(temp);
-				for(int i=0;i<row;i++){
-					for(int j=0;j<col;j++)
-						cout<<mark[i][j];
-					cout<<endl;
-				}
-				Items.print();
-				cout<<"Max Stack Number: "<<MaxStackNumber<<endl;
+				//Items.print();
+				cout<<"\n******* Stack *******"<<endl;
+				cout<<"length: "<<Items.top<<endl;
 				cout<<"time: "<<time<<endl;
+				cout<<"Max Stack Number: "<<MaxStackNumber<<endl;
+				cout<<"*******     *******"<<endl<<endl;
 				return;
 			}
 			if((!maze[g][h]) && (!mark[g][h]) ){
@@ -203,6 +186,23 @@ string showMenu(){
 	cout<<"Choose a number (1-5) please"<<endl;
 	cin>>samNum;
 		switch(samNum){
+			
+			
+		}
+}
+*/
+
+int main(){
+	
+	int samNum;
+	int clock,direction,moveNum;
+	string fileName;
+	while(1){
+	
+	do{
+		cout<<"please enter sample (1-5) (exit:0) : ";
+		cin>>samNum;
+		switch(samNum){
 			case 1:
 				fileName="sample1.txt";
 				break;
@@ -218,24 +218,38 @@ string showMenu(){
 			case 5:
 				fileName="sample5.txt";
 				break;
+			case 0:
+				exit(0);
 			default:
-				cout<<"Your number is false";
-			
+				cout<<"your number is false";
 		}
-}
-*/
-
-int main(){
-	/*
-	int samNum;
-	string fileName;
-	bool exit=false;
-	while(!bool){
-		showMenu();
-		
-	}
-	*/
-  fstream f1("sample5.txt");
+	}while(samNum>5 || samNum<0);
+	do{
+		cout<<"please enter move number(1-4): ";
+		cin>>moveNum;
+		switch(moveNum){
+			case 1:
+				clock=1;
+				direction=4;
+			break;
+			case 2:
+				clock=-1;
+				direction=4;
+			break;
+			case 3:
+				clock=1;
+				direction=8;
+			break;
+			case 4:
+				clock=-1;
+				direction=8;
+			break;
+			default:
+				cout<<"your number is false"<<endl;
+		}
+	}while(moveNum>4 || moveNum<0);
+	
+  fstream f1(fileName);
   int row,col;
   f1>>row;
   f1>>col;
@@ -260,7 +274,23 @@ int main(){
     		mark[i][j]=0;
 	
 //	path(row,col,maze,mark,8,1);
-	path_Queue(row,col,maze,mark,4,1);
+//	path_Queue(row,col,maze,mark,4,1);
+	int sq;
+	do{
+		cout<<"enter a number:\n1:Stack\n2:Queue\n";
+		cin>>sq;
+		switch(sq){
+			case 1:
+				path_Stack(row,col,maze,mark,direction,clock);
+			break;
+			case 2:
+				path_Queue(row,col,maze,mark,direction,clock);
+			break;
+			default:
+			cout<<"your number is false"<<endl;
+		}
+		
+	}while(sq>2 || sq<1);
 	
 	for(int i=0;i<row;i++)
   	delete [] maze[i];
@@ -268,5 +298,6 @@ int main(){
   	for(int i=0;i<row;i++)
   		delete [] mark[i];
  	 delete []mark;
+ }
  	 return 0;
 }
